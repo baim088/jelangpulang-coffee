@@ -66,11 +66,10 @@
     <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-r border-surface-container-highest/60">
         <div class="flex flex-col">
             <!-- Brand & Status Operasional -->
-            <div class="p-6 flex flex-col gap-2 bg-surface-container-low border-b border-surface-container-highest/40">
-                <div class="flex items-center gap-2">
-                    <span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm">JP</span>
-                    <span class="font-headline text-2xl font-bold tracking-tight uppercase text-primary">JelangPulang</span>
-                </div>
+            <div class="p-5 flex flex-col gap-2 bg-surface-container-low border-b border-surface-container-highest/40">
+                <a href="{{ route('kasir.antrean') }}" class="flex items-center">
+                    <img src="{{ asset('images/logo.png') }}" alt="JelangPulang" class="h-9 w-auto object-contain">
+                </a>
                 <div class="flex items-center justify-between mt-1">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/60 text-on-secondary-container text-xs font-semibold">
                         <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>Buka • Kasir Aktif

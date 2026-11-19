@@ -83,7 +83,8 @@
 
     <!-- Header Toko -->
     <div class="text-center">
-        <div class="font-bold" style="font-size: 14px; letter-spacing: 1px;">JELANGPULANG</div>
+        <img src="{{ asset('images/logo.png') }}" alt="JelangPulang" style="max-height: 28px; width: auto; margin: 0 auto 4px auto; display: block; filter: grayscale(100%);">
+        <div class="font-bold" style="font-size: 13px; letter-spacing: 1px;">JELANGPULANG</div>
         <div style="font-size: 9px;">KEDAI KOPI SENJA & BERSANTAI</div>
         <div style="font-size: 9px; margin-top: 2px;">{{ $store->address ?? 'Jl. Menuju Senja No. 24' }}</div>
         <div style="font-size: 9px;">Telp: {{ $store->phone ?? '0812-3456-7890' }}</div>

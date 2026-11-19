@@ -5,7 +5,9 @@
         <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 shadow-sm border border-outline-variant/30">
             <!-- Header -->
             <div class="text-center mb-6">
-                <span class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-2xl mx-auto mb-3 shadow-md">JP</span>
+                <a href="{{ route('home') }}" class="inline-block mb-3">
+                    <img src="{{ asset('images/logo.png') }}" alt="JelangPulang" class="h-12 w-auto object-contain mx-auto">
+                </a>
                 <h1 class="font-display text-3xl font-extrabold text-primary uppercase">Senang Melihatmu Kembali</h1>
                 <p class="text-xs text-on-surface-variant mt-1">Satu tegukan lagi sebelum arah pulang.</p>
             </div>

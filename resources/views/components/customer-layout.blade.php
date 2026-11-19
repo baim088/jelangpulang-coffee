@@ -64,12 +64,9 @@
     <header class="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(92,35,8,0.06)]">
         <div class="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <!-- Brand Logo -->
-            <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-xl">JP</span>
-                <div class="flex flex-col">
-                    <span class="font-headline text-2xl font-bold tracking-tight text-primary leading-none">JELANGPULANG</span>
-                    <span class="text-[10px] tracking-widest uppercase text-secondary font-semibold">Satu gelas sebelum arah pulang</span>
-                </div>
+            <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+                <img src="{{ asset('images/logo.png') }}" alt="JELANGPULANG" class="h-11 w-auto object-contain">
+                <span class="sr-only">JELANGPULANG</span>
             </a>
 
             <!-- Nav Links (Desktop) -->
@@ -188,8 +185,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="md:col-span-2 space-y-3">
                 <div class="flex items-center gap-2">
-                    <span class="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold text-lg">JP</span>
-                    <span class="font-headline text-2xl font-bold tracking-tight text-primary">JELANGPULANG</span>
+                    <img src="{{ asset('images/logo.png') }}" alt="JelangPulang Coffee" class="h-9 w-auto object-contain">
                 </div>
                 <p class="text-sm leading-relaxed max-w-sm">
                     Kedai kopi sore hari. Jeda sejenak untuk melaraskan rasa dan menghela napas sebelum perjalanan kembali pulang ke rumah.
