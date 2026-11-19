@@ -100,12 +100,14 @@
                 <!-- Auth Info or Login -->
                 @auth
                     <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40">
-                        <div class="flex flex-col text-right">
-                            <span class="hidden sm:inline text-xs font-semibold text-on-surface">{{ auth()->user()->name }}</span>
+                        <a href="{{ route('customer.profile') }}" class="flex flex-col text-right hover:opacity-80 transition-opacity" title="Buka Dashboard Akun">
+                            <span class="hidden sm:inline text-xs font-semibold text-primary">{{ auth()->user()->name }}</span>
                             @if(auth()->user()->role !== 'user')
                                 <span class="hidden sm:inline text-[10px] text-secondary font-bold uppercase">{{ auth()->user()->role }}</span>
+                            @else
+                                <span class="hidden sm:inline text-[10px] text-on-surface-variant">Akun Saya</span>
                             @endif
-                        </div>
+                        </a>
                         @if(auth()->user()->isKasir())
                             <a href="{{ route('kasir.antrean') }}" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-secondary-container transition-colors" title="Masuk ke Sistem Kasir">
                                 <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
@@ -176,6 +178,10 @@
             <a href="{{ route('order.history') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('order.history') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
                 <span class="material-symbols-outlined text-[22px]">history</span>
                 <span>Riwayat</span>
+            </a>
+            <a href="{{ route('customer.profile') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('customer.profile*') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
+                <span class="material-symbols-outlined text-[22px]">account_circle</span>
+                <span>Akun</span>
             </a>
         @elseif(!auth()->check())
             <a href="/login" class="flex flex-col items-center gap-0.5 text-xs text-on-surface-variant">

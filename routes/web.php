@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,13 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Dashboard & Profil Pelanggan (Auth)
+Route::middleware('auth')->prefix('profil')->name('customer.profile')->group(function () {
+    Route::get('/', [ProfileController::class, 'index']);
+    Route::put('/', [ProfileController::class, 'updateProfile'])->name('.update');
+    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('.password');
+});
 
 // Modul C: Kasir Operasional (FR-C01 s/d FR-C10)
 Route::prefix('kasir')->name('kasir.')->middleware(['auth', 'role:kasir,admin'])->group(function () {
