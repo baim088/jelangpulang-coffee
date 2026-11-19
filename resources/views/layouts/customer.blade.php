@@ -77,21 +77,11 @@
                 <a href="{{ route('catalog.index') }}" class="text-sm font-semibold {{ request()->routeIs('catalog.*') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                     Katalog Menu
                 </a>
-                @auth
+                @if(auth()->check() && auth()->user()->role === 'user')
                     <a href="{{ route('order.history') }}" class="text-sm font-semibold {{ request()->routeIs('order.history') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                         Riwayat Pesanan
                     </a>
-                    @if(auth()->user()->isKasir())
-                        <a href="/kasir/antrean" class="text-xs font-bold px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-container">
-                            Layar Kasir
-                        </a>
-                    @endif
-                    @if(auth()->user()->isAdmin())
-                        <a href="/admin/dashboard" class="text-xs font-bold px-3 py-1 rounded-full bg-primary-container text-on-primary">
-                            Layar Admin
-                        </a>
-                    @endif
-                @endauth
+                @endif
             </nav>
 
             <!-- Actions (Cart & Auth) -->
@@ -110,7 +100,17 @@
                 <!-- Auth Info or Login -->
                 @auth
                     <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40">
-                        <span class="hidden sm:inline text-xs font-medium text-on-surface-variant">{{ auth()->user()->name }}</span>
+                        <div class="flex flex-col text-right">
+                            <span class="hidden sm:inline text-xs font-semibold text-on-surface">{{ auth()->user()->name }}</span>
+                            @if(auth()->user()->role !== 'user')
+                                <span class="hidden sm:inline text-[10px] text-secondary font-bold uppercase">{{ auth()->user()->role }}</span>
+                            @endif
+                        </div>
+                        @if(auth()->user()->isKasir())
+                            <a href="{{ route('kasir.antrean') }}" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-secondary-container transition-colors" title="Masuk ke Sistem Kasir">
+                                <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
+                            </a>
+                        @endif
                         <form method="POST" action="/logout" class="inline">
                             @csrf
                             <button type="submit" class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Keluar">
@@ -119,9 +119,14 @@
                         </form>
                     </div>
                 @else
-                    <a href="/login" class="hidden sm:inline-flex items-center justify-center font-semibold text-xs px-4 py-2 rounded-full border border-primary/20 text-primary hover:bg-surface-container transition-all">
-                        Masuk
-                    </a>
+                    <div class="hidden sm:flex items-center gap-2">
+                        <a href="/login" class="font-semibold text-xs px-4 py-2 rounded-full border border-primary/20 text-primary hover:bg-surface-container transition-all">
+                            Masuk
+                        </a>
+                        <a href="/register" class="font-semibold text-xs px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-primary-container transition-all">
+                            Daftar
+                        </a>
+                    </div>
                 @endauth
             </div>
         </div>
@@ -167,17 +172,17 @@
                 </span>
             @endif
         </a>
-        @auth
+        @if(auth()->check() && auth()->user()->role === 'user')
             <a href="{{ route('order.history') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('order.history') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
                 <span class="material-symbols-outlined text-[22px]">history</span>
                 <span>Riwayat</span>
             </a>
-        @else
+        @elseif(!auth()->check())
             <a href="/login" class="flex flex-col items-center gap-0.5 text-xs text-on-surface-variant">
                 <span class="material-symbols-outlined text-[22px]">person</span>
                 <span>Masuk</span>
             </a>
-        @endauth
+        @endif
     </div>
 
     <!-- Footer -->
