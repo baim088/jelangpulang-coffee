@@ -1,7 +1,10 @@
 <x-customer-layout>
     <x-slot:title>Dashboard Akun Saya — JelangPulang</x-slot:title>
 
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div x-data="{ 
+        editProfileModal: {{ ($errors->has('name') || $errors->has('email') || $errors->has('phone') || request('modal') === 'profile') ? 'true' : 'false' }},
+        editPasswordModal: {{ ($errors->has('current_password') || $errors->has('password') || request('modal') === 'password') ? 'true' : 'false' }}
+    }" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
 
         <!-- HEADER PROFIL PELANGGAN -->
         <div class="bg-surface-container rounded-3xl p-6 sm:p-8 shadow-sm border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -27,14 +30,19 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="{{ route('order.history') }}" class="px-5 py-2.5 rounded-full bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-bold font-headline flex items-center gap-1.5 shadow-sm">
-                    <span class="material-symbols-outlined text-[16px]">history</span>
-                    <span>Semua Riwayat</span>
-                </a>
-                <a href="{{ route('catalog.index') }}" class="px-5 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-container transition-all text-xs font-bold font-headline flex items-center gap-1.5 shadow-sm">
-                    <span class="material-symbols-outlined text-[16px]">coffee</span>
-                    <span>Pesan Kopi</span>
+            <!-- Header Quick Actions -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" @click="editProfileModal = true" class="px-4 py-2.5 rounded-full bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-bold font-headline flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">manage_accounts</span>
+                    <span>Edit Profil</span>
+                </button>
+                <button type="button" @click="editPasswordModal = true" class="px-4 py-2.5 rounded-full bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-bold font-headline flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">lock_reset</span>
+                    <span>Ganti Kata Sandi</span>
+                </button>
+                <a href="{{ route('order.history') }}" class="px-4 py-2.5 rounded-full bg-secondary-container text-on-secondary-container hover:opacity-90 transition-all text-xs font-bold font-headline flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">receipt_long</span>
+                    <span>Riwayat Pesanan</span>
                 </a>
             </div>
         </div>
@@ -136,115 +144,6 @@
             </div>
         </div>
 
-        <!-- 2 KOLOM: FORM EDIT PROFIL & GANTI PASSWORD -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            
-            <!-- FORM 1: EDIT INFORMASI AKUN -->
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 shadow-sm border border-outline-variant/30 space-y-6">
-                <div>
-                    <h2 class="font-headline text-2xl font-bold text-primary">Informasi Akun Pelanggan</h2>
-                    <p class="text-xs text-on-surface-variant mt-1">Perbarui nama lengkap, alamat email, atau nomor WhatsApp aktif Anda.</p>
-                </div>
-
-                <form action="{{ route('customer.profile.update') }}" method="POST" class="space-y-4">
-                    @csrf
-                    @method('PUT')
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="name">
-                            Nama Lengkap <span class="text-error">*</span>
-                        </label>
-                        <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        @error('name')
-                            <p class="text-error text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="email">
-                            Alamat Email <span class="text-error">*</span>
-                        </label>
-                        <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        @error('email')
-                            <p class="text-error text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="phone">
-                            Nomor WhatsApp / Telepon
-                        </label>
-                        <input type="text" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Contoh: 081234567890"
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        @error('phone')
-                            <p class="text-error text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="submit" class="w-full py-3 rounded-full bg-primary text-on-primary font-headline text-sm font-bold hover:bg-primary-container transition-all shadow-sm">
-                            Simpan Perubahan Profil
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- FORM 2: GANTI KATA SANDI -->
-            <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 shadow-sm border border-outline-variant/30 space-y-6">
-                <div>
-                    <h2 class="font-headline text-2xl font-bold text-primary">Ganti Kata Sandi</h2>
-                    <p class="text-xs text-on-surface-variant mt-1">Gunakan kombinasi kata sandi yang aman untuk melindungi akun JelangPulang Anda.</p>
-                </div>
-
-                <form action="{{ route('customer.profile.password') }}" method="POST" class="space-y-4">
-                    @csrf
-                    @method('PUT')
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="current_password">
-                            Kata Sandi Saat Ini <span class="text-error">*</span>
-                        </label>
-                        <input type="password" id="current_password" name="current_password" required
-                               placeholder="Masukkan kata sandi lama Anda"
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        @error('current_password')
-                            <p class="text-error text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="password">
-                            Kata Sandi Baru <span class="text-error">*</span>
-                        </label>
-                        <input type="password" id="password" name="password" required
-                               placeholder="Minimal 6 karakter"
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                        @error('password')
-                            <p class="text-error text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="password_confirmation">
-                            Konfirmasi Kata Sandi Baru <span class="text-error">*</span>
-                        </label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required
-                               placeholder="Ulangi kata sandi baru"
-                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
-                    </div>
-
-                    <div class="pt-2">
-                        <button type="submit" class="w-full py-3 rounded-full bg-secondary text-on-secondary font-headline text-sm font-bold hover:bg-secondary/90 transition-all shadow-sm">
-                            Perbarui Kata Sandi
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-
         <!-- 3 PESANAN TERAKHIR SINGKAT -->
         <div class="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 shadow-sm border border-outline-variant/30 space-y-4">
             <div class="flex items-center justify-between">
@@ -285,6 +184,142 @@
                     @endforeach
                 </div>
             @endif
+        </div>
+
+        <!-- ==============================================
+             MODAL 1: EDIT INFORMASI AKUN
+             ============================================== -->
+        <div x-cloak x-show="editProfileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0">
+            <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-outline-variant/40 space-y-5" @click.away="editProfileModal = false">
+                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+                    <div class="flex items-center gap-2 text-primary">
+                        <span class="material-symbols-outlined text-[24px]">manage_accounts</span>
+                        <h3 class="font-headline text-xl font-bold">Edit Informasi Akun</h3>
+                    </div>
+                    <button type="button" @click="editProfileModal = false" class="text-on-surface-variant hover:text-on-surface text-xl font-bold">&times;</button>
+                </div>
+
+                <form action="{{ route('customer.profile.update') }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_name">
+                            Nama Lengkap <span class="text-error">*</span>
+                        </label>
+                        <input type="text" id="modal_name" name="name" value="{{ old('name', $user->name) }}" required
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        @error('name')
+                            <p class="text-error text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_email">
+                            Alamat Email <span class="text-error">*</span>
+                        </label>
+                        <input type="email" id="modal_email" name="email" value="{{ old('email', $user->email) }}" required
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        @error('email')
+                            <p class="text-error text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_phone">
+                            Nomor WhatsApp / Telepon
+                        </label>
+                        <input type="text" id="modal_phone" name="phone" value="{{ old('phone', $user->phone) }}" placeholder="Contoh: 081234567890"
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        @error('phone')
+                            <p class="text-error text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-outline-variant/20">
+                        <button type="button" @click="editProfileModal = false" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-5 py-2.5 rounded-full bg-primary text-on-primary font-headline text-xs font-bold hover:bg-primary-container transition-all shadow-sm">
+                            Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             MODAL 2: GANTI KATA SANDI
+             ============================================== -->
+        <div x-cloak x-show="editPasswordModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0">
+            <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-outline-variant/40 space-y-5" @click.away="editPasswordModal = false">
+                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+                    <div class="flex items-center gap-2 text-secondary">
+                        <span class="material-symbols-outlined text-[24px]">lock_reset</span>
+                        <h3 class="font-headline text-xl font-bold">Ganti Kata Sandi</h3>
+                    </div>
+                    <button type="button" @click="editPasswordModal = false" class="text-on-surface-variant hover:text-on-surface text-xl font-bold">&times;</button>
+                </div>
+
+                <form action="{{ route('customer.profile.password') }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('PUT')
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_current_password">
+                            Kata Sandi Saat Ini <span class="text-error">*</span>
+                        </label>
+                        <input type="password" id="modal_current_password" name="current_password" required
+                               placeholder="Masukkan kata sandi lama Anda"
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        @error('current_password')
+                            <p class="text-error text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_password">
+                            Kata Sandi Baru <span class="text-error">*</span>
+                        </label>
+                        <input type="password" id="modal_password" name="password" required
+                               placeholder="Minimal 6 karakter"
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                        @error('password')
+                            <p class="text-error text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="modal_password_confirmation">
+                            Konfirmasi Kata Sandi Baru <span class="text-error">*</span>
+                        </label>
+                        <input type="password" id="modal_password_confirmation" name="password_confirmation" required
+                               placeholder="Ulangi kata sandi baru"
+                               class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-outline-variant/30 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    </div>
+
+                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-outline-variant/20">
+                        <button type="button" @click="editPasswordModal = false" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-5 py-2.5 rounded-full bg-secondary text-on-secondary font-headline text-xs font-bold hover:bg-secondary/90 transition-all shadow-sm">
+                            Perbarui Kata Sandi
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
     </div>

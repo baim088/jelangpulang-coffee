@@ -97,28 +97,95 @@
                     @endif
                 </a>
 
-                <!-- Auth Info or Login -->
+                <!-- Auth Info with User Dropdown -->
                 @auth
-                    <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40">
-                        <a href="{{ route('customer.profile') }}" class="flex flex-col text-right hover:opacity-80 transition-opacity" title="Buka Dashboard Akun">
-                            <span class="hidden sm:inline text-xs font-semibold text-primary">{{ auth()->user()->name }}</span>
-                            @if(auth()->user()->role !== 'user')
-                                <span class="hidden sm:inline text-[10px] text-secondary font-bold uppercase">{{ auth()->user()->role }}</span>
-                            @else
-                                <span class="hidden sm:inline text-[10px] text-on-surface-variant">Akun Saya</span>
-                            @endif
-                        </a>
-                        @if(auth()->user()->isKasir())
-                            <a href="{{ route('kasir.antrean') }}" class="p-1.5 rounded-lg bg-surface-container text-primary hover:bg-secondary-container transition-colors" title="Masuk ke Sistem Kasir">
-                                <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
-                            </a>
-                        @endif
-                        <form method="POST" action="/logout" class="inline">
-                            @csrf
-                            <button type="submit" class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Keluar">
-                                <span class="material-symbols-outlined text-[20px]">logout</span>
-                            </button>
-                        </form>
+                    <div x-data="{ openDropdown: false }" class="relative pl-2 border-l border-outline-variant/40">
+                        <!-- Dropdown Trigger Button -->
+                        <button type="button" @click="openDropdown = !openDropdown" 
+                                class="flex items-center gap-2 p-1.5 rounded-full hover:bg-surface-container transition-all focus:outline-none">
+                            <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline font-bold text-sm shadow-sm">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            </div>
+                            <div class="hidden sm:flex flex-col text-left">
+                                <span class="text-xs font-semibold text-primary truncate max-w-[120px]">{{ auth()->user()->name }}</span>
+                                <span class="text-[10px] text-on-surface-variant capitalize leading-none">{{ auth()->user()->role }}</span>
+                            </div>
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant transition-transform" :class="openDropdown ? 'rotate-180' : ''">expand_more</span>
+                        </button>
+
+                        <!-- Dropdown Menu Box -->
+                        <div x-cloak x-show="openDropdown" @click.away="openDropdown = false"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                             x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                             class="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-surface-container-lowest shadow-2xl border border-outline-variant/40 py-2 z-50">
+                            
+                            <!-- User Mini Card -->
+                            <div class="px-4 py-3 border-b border-outline-variant/20 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline font-bold text-base shadow-sm">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-xs font-bold text-on-surface truncate">{{ auth()->user()->name }}</p>
+                                    <p class="text-[11px] text-on-surface-variant truncate">{{ auth()->user()->email }}</p>
+                                    <span class="inline-block mt-0.5 px-2 py-0.2 rounded-full text-[9px] font-bold uppercase tracking-wider bg-secondary-fixed text-on-secondary-container">
+                                        {{ auth()->user()->role }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Menu Links -->
+                            <div class="py-1">
+                                <a href="{{ route('customer.profile') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">dashboard</span>
+                                    <span>Dashboard Akun</span>
+                                </a>
+
+                                <a href="{{ route('order.history') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-secondary">receipt_long</span>
+                                    <span>Riwayat Pesanan</span>
+                                </a>
+
+                                <a href="{{ route('customer.profile') }}?modal=profile" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-outline">manage_accounts</span>
+                                    <span>Edit Profil</span>
+                                </a>
+
+                                <a href="{{ route('customer.profile') }}?modal=password" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                    <span class="material-symbols-outlined text-[18px] text-outline">lock_reset</span>
+                                    <span>Ganti Kata Sandi</span>
+                                </a>
+
+                                @if(auth()->user()->isKasir())
+                                    <div class="border-t border-outline-variant/20 my-1"></div>
+                                    <a href="{{ route('kasir.antrean') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-secondary hover:bg-secondary-container/30 transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
+                                        <span>Portal Kasir</span>
+                                    </a>
+                                @endif
+
+                                @if(auth()->user()->isAdmin())
+                                    <a href="/admin/dashboard" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-primary hover:bg-primary-container/20 transition-colors">
+                                        <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                                        <span>Portal Admin</span>
+                                    </a>
+                                @endif
+                            </div>
+
+                            <!-- Logout Option -->
+                            <div class="border-t border-outline-variant/20 pt-1 mt-1">
+                                <form method="POST" action="/logout">
+                                    @csrf
+                                    <button type="submit" class="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-error font-semibold hover:bg-error-container/40 transition-colors text-left">
+                                        <span class="material-symbols-outlined text-[18px]">logout</span>
+                                        <span>Keluar / Logout</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 @else
                     <div class="hidden sm:flex items-center gap-2">
