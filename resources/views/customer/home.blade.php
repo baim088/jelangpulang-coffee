@@ -226,32 +226,29 @@
         </div>
     </section>
 
-    <!-- CTA BANNER PENUTUP -->
-    <section class="py-16 bg-surface-container-low border-b border-outline-variant/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="relative overflow-hidden rounded-[2.5rem] bg-primary text-on-primary p-8 md:p-16 shadow-xl text-center">
-                <div class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-primary-container/40 blur-3xl pointer-events-none"></div>
-                <div class="absolute -left-20 -top-20 w-96 h-96 rounded-full bg-secondary/20 blur-3xl pointer-events-none"></div>
+    <!-- CTA STRIP PENUTUP (FULL WIDTH) -->
+    <section class="w-full bg-primary text-on-primary py-14 sm:py-20 relative overflow-hidden border-b border-outline-variant/30">
+        <!-- Ambient Glow Accents -->
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-primary-container/40 blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-secondary/20 blur-3xl pointer-events-none"></div>
 
-                <div class="relative z-10 max-w-3xl mx-auto space-y-4 flex flex-col items-center">
-                    <span class="text-xs font-headline font-bold tracking-widest text-secondary-fixed uppercase">RITUAL SENJA KEDAI</span>
-                    <h2 class="font-headline text-3xl sm:text-5xl font-extrabold uppercase leading-tight tracking-tight">
-                        Pintu Selalu Terbuka Sebelum Arah Pulangmu.
-                    </h2>
-                    <p class="text-sm sm:text-base text-primary-fixed leading-relaxed opacity-95 max-w-xl">
-                        Singgahlah sejenak di Jalan Senja Kencana No. 42. Biarkan bising kota surut pelan-pelan di ambang pintu, sementara seduhan kopi hangat menemanimu melepas lelah.
-                    </p>
-                    <div class="flex flex-wrap justify-center items-center gap-4 pt-4">
-                        <a href="{{ route('catalog.index') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-secondary-container text-on-secondary-container font-headline font-bold text-base hover:opacity-90 transition-all shadow-md active:scale-95">
-                            <span>Pesan Sekarang</span>
-                            <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
-                        </a>
-                        <a href="{{ route('about') }}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-surface-container text-primary font-headline font-bold text-base hover:bg-surface-container-high transition-all active:scale-95">
-                            <span>Kisah di Balik Kedai</span>
-                            <span class="material-symbols-outlined text-[18px]">auto_stories</span>
-                        </a>
-                    </div>
-                </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center space-y-4">
+            <span class="text-xs font-headline font-bold tracking-widest text-secondary-fixed uppercase">RITUAL SENJA KEDAI</span>
+            <h2 class="font-headline text-3xl sm:text-4xl md:text-5xl font-extrabold uppercase leading-tight tracking-tight">
+                Pintu Selalu Terbuka Sebelum Arah Pulangmu.
+            </h2>
+            <p class="text-sm sm:text-base text-primary-fixed leading-relaxed opacity-95 max-w-xl">
+                Singgahlah sejenak di Jalan Senja Kencana No. 42. Biarkan bising kota surut pelan-pelan di ambang pintu, ditemani seduhan kopi hangat pereda lelah.
+            </p>
+            <div class="flex flex-wrap justify-center items-center gap-4 pt-3">
+                <a href="{{ route('catalog.index') }}" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-secondary-container text-on-secondary-container font-headline font-bold text-base hover:opacity-90 transition-all shadow-md active:scale-95">
+                    <span>Pesan Sekarang</span>
+                    <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                </a>
+                <a href="{{ route('about') }}" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-surface-container text-primary font-headline font-bold text-base hover:bg-surface-container-high transition-all active:scale-95">
+                    <span>Kisah di Balik Kedai</span>
+                    <span class="material-symbols-outlined text-[18px]">auto_stories</span>
+                </a>
             </div>
         </div>
     </section>
