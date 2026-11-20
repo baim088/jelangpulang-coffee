@@ -131,14 +131,29 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('checkout.index') }}" class="w-full py-3.5 px-6 rounded-full bg-primary text-on-primary font-headline text-lg font-bold hover:bg-primary-container transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 text-center">
-                        <span>Lanjut ke Checkout</span>
-                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                    </a>
+                    @if(auth()->check() && (auth()->user()->isKasir() || auth()->user()->isAdmin()))
+                        <div class="p-3 mb-4 rounded-2xl bg-secondary-fixed text-on-secondary-container text-xs space-y-2 border border-secondary/30">
+                            <p class="font-bold flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px]">info</span>
+                                Akun Staf Operasional
+                            </p>
+                            <p class="text-[11px] leading-relaxed">
+                                Anda login sebagai Kasir/Admin. Akun staf tidak melakukan self-order pelanggan.
+                            </p>
+                            <a href="{{ route('kasir.pos') }}" class="block text-center py-2 px-4 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container">
+                                Buka Sistem POS Kasir
+                            </a>
+                        </div>
+                    @else
+                        <a href="{{ route('checkout.index') }}" class="w-full py-3.5 px-6 rounded-full bg-primary text-on-primary font-headline text-lg font-bold hover:bg-primary-container transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 text-center">
+                            <span>Lanjut ke Checkout</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </a>
 
-                    <p class="text-[11px] text-center text-on-surface-variant mt-3">
-                        Pembayaran via QRIS ShopeePay atau Tunai di Kasir.
-                    </p>
+                        <p class="text-[11px] text-center text-on-surface-variant mt-3">
+                            Pembayaran via QRIS ShopeePay atau Tunai di Kasir.
+                        </p>
+                    @endif
                 </div>
 
             </div>

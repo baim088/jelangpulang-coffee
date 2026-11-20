@@ -17,6 +17,11 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
+        // Dashboard pelanggan hanya untuk akun pelanggan (role: user)
+        if ($user->role !== 'user') {
+            return redirect()->route('kasir.antrean')->with('error', 'Dashboard pelanggan hanya dapat diakses oleh akun pelanggan.');
+        }
+
         // Statistik belanja pelanggan
         $totalSpending = Order::where('user_id', $user->id)
             ->whereIn('status', ['diproses', 'selesai'])

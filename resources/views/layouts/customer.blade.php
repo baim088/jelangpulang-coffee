@@ -139,39 +139,52 @@
 
                             <!-- Menu Links -->
                             <div class="py-1">
-                                <a href="{{ route('customer.profile') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
-                                    <span class="material-symbols-outlined text-[18px] text-primary">dashboard</span>
-                                    <span>Dashboard Akun</span>
-                                </a>
-
-                                <a href="{{ route('order.history') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
-                                    <span class="material-symbols-outlined text-[18px] text-secondary">receipt_long</span>
-                                    <span>Riwayat Pesanan</span>
-                                </a>
-
-                                <a href="{{ route('customer.profile') }}?modal=profile" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
-                                    <span class="material-symbols-outlined text-[18px] text-outline">manage_accounts</span>
-                                    <span>Edit Profil</span>
-                                </a>
-
-                                <a href="{{ route('customer.profile') }}?modal=password" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
-                                    <span class="material-symbols-outlined text-[18px] text-outline">lock_reset</span>
-                                    <span>Ganti Kata Sandi</span>
-                                </a>
-
-                                @if(auth()->user()->isKasir())
-                                    <div class="border-t border-outline-variant/20 my-1"></div>
-                                    <a href="{{ route('kasir.antrean') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-secondary hover:bg-secondary-container/30 transition-colors">
-                                        <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
-                                        <span>Portal Kasir</span>
+                                @if(auth()->user()->role === 'user')
+                                    <a href="{{ route('customer.profile') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[18px] text-primary">dashboard</span>
+                                        <span>Dashboard Akun</span>
                                     </a>
-                                @endif
 
-                                @if(auth()->user()->isAdmin())
-                                    <a href="/admin/dashboard" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-primary hover:bg-primary-container/20 transition-colors">
-                                        <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
-                                        <span>Portal Admin</span>
+                                    <a href="{{ route('order.history') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[18px] text-secondary">receipt_long</span>
+                                        <span>Riwayat Pesanan</span>
                                     </a>
+
+                                    <a href="{{ route('customer.profile') }}?modal=profile" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[18px] text-outline">manage_accounts</span>
+                                        <span>Edit Profil</span>
+                                    </a>
+
+                                    <a href="{{ route('customer.profile') }}?modal=password" class="flex items-center gap-2.5 px-4 py-2 text-xs text-on-surface hover:bg-surface-container transition-colors">
+                                        <span class="material-symbols-outlined text-[18px] text-outline">lock_reset</span>
+                                        <span>Ganti Kata Sandi</span>
+                                    </a>
+                                @else
+                                    <!-- Menu Staf (Kasir / Admin) -->
+                                    <div class="px-4 py-1 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">
+                                        Operasional Kedai
+                                    </div>
+                                    @if(auth()->user()->isKasir())
+                                        <a href="{{ route('kasir.antrean') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container transition-colors">
+                                            <span class="material-symbols-outlined text-[18px] text-secondary">receipt_long</span>
+                                            <span>Antrean Pesanan Masuk</span>
+                                        </a>
+                                        <a href="{{ route('kasir.pos') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container transition-colors">
+                                            <span class="material-symbols-outlined text-[18px] text-primary">point_of_sale</span>
+                                            <span>POS / Walk-in</span>
+                                        </a>
+                                        <a href="{{ route('kasir.rekap') }}" class="flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container transition-colors">
+                                            <span class="material-symbols-outlined text-[18px] text-outline">calculate</span>
+                                            <span>Rekap Shift</span>
+                                        </a>
+                                    @endif
+
+                                    @if(auth()->user()->isAdmin())
+                                        <a href="/admin/dashboard" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-primary hover:bg-primary-container/20 transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+                                            <span>Panel Admin</span>
+                                        </a>
+                                    @endif
                                 @endif
                             </div>
 

@@ -16,6 +16,11 @@ class CheckoutController extends Controller
 
     public function index()
     {
+        // Kasir dan Admin tidak diperkenankan melakukan self-order pelanggan
+        if (auth()->check() && (auth()->user()->isKasir() || auth()->user()->isAdmin())) {
+            return redirect()->route('kasir.pos')->with('error', 'Akun kasir/staf tidak dapat membuat self-order pelanggan. Silakan gunakan sistem POS Kasir.');
+        }
+
         $items = $this->cartService->all();
         if (empty($items)) {
             return redirect()->route('catalog.index')->with('error', 'Keranjang Anda masih kosong. Silakan pilih menu terlebih dahulu.');
@@ -29,6 +34,11 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
     {
+        // Kasir dan Admin tidak diperkenankan melakukan self-order pelanggan
+        if (auth()->check() && (auth()->user()->isKasir() || auth()->user()->isAdmin())) {
+            return redirect()->route('kasir.pos')->with('error', 'Akun kasir/staf tidak dapat membuat self-order pelanggan. Silakan gunakan sistem POS Kasir.');
+        }
+
         $validated = $request->validate([
             'customer_name' => 'required|string|max:60',
             'order_type' => 'required|in:dinein,takeaway',

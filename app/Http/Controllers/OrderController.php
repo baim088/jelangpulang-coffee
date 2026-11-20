@@ -81,6 +81,11 @@ class OrderController extends Controller
 
     public function history()
     {
+        // Riwayat pesanan hanya untuk akun pelanggan (role: user)
+        if (auth()->user()->role !== 'user') {
+            return redirect()->route('kasir.antrean')->with('error', 'Halaman riwayat pesanan pelanggan hanya untuk akun pelanggan.');
+        }
+
         $orders = Order::where('user_id', auth()->id())
             ->with(['items.product'])
             ->latest()
