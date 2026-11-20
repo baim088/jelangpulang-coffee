@@ -154,6 +154,38 @@
         </div>
     </section>
 
+    <!-- FASILITAS & KENYAMANAN KEDAI -->
+    <section class="py-14 bg-surface border-b border-outline-variant/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-headline font-bold tracking-widest text-secondary uppercase">SUASANA KEDAI</span>
+                <h2 class="font-headline text-3xl font-extrabold text-primary uppercase">Kenyamanan yang Tersedia</h2>
+                <p class="text-sm text-on-surface-variant mt-1">Fasilitas pendukung untuk menemani jeda sore Anda yang tenang sebelum arah pulang.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach([
+                    ['local_parking', 'Parkir Motor & Mobil', 'Area teduh & aman'],
+                    ['wifi', 'WiFi 100 Mbps', 'Koneksi stabil'],
+                    ['power', 'Colokan Setiap Meja', 'Daya kerja terpenuhi'],
+                    ['mosque', 'Musholla Bersih', 'Ibadah tenang'],
+                    ['ac_unit', 'Indoor Bebas Asap', 'Sejuk & nyaman'],
+                    ['yard', 'Teras Semi-Outdoor', 'Angin sejuk sore'],
+                ] as [$icon, $label, $sub])
+                    <div class="p-4 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all flex flex-col items-center text-center gap-2 border border-outline-variant/20 shadow-sm">
+                        <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined text-[20px]">{{ $icon }}</span>
+                        </div>
+                        <div>
+                            <span class="font-headline font-bold text-sm text-primary block leading-tight">{{ $label }}</span>
+                            <span class="text-[11px] text-on-surface-variant mt-0.5 block">{{ $sub }}</span>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <!-- FAQ SECTION -->
     <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto space-y-6">

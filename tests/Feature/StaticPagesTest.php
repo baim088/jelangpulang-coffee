@@ -32,10 +32,12 @@ class StaticPagesTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Hubungi Kami');
-        $response->assertSee('Titik Temu Kedai');
-        $response->assertSee('Kenyamanan yang Tersedia');
         $response->assertSee('Kirimkan Sapaan atau Pertanyaan');
+        $response->assertDontSee('Titik Temu Kedai');
+        $response->assertDontSee('Kenyamanan yang Tersedia');
+        $response->assertDontSee('Rute &amp; Aksesibilitas', false);
         $response->assertDontSee('Kanal Percakapan Cepat');
+        $response->assertDontSee('Waze');
     }
 
     public function test_navigasi_desktop_dan_mobile_memuat_tautan_tentang_dan_kontak()
@@ -47,6 +49,9 @@ class StaticPagesTest extends TestCase
         $response->assertSee(route('contact'));
         $response->assertSee('Tentang Kami');
         $response->assertSee('Kontak');
+        $response->assertSee('Kenyamanan yang Tersedia');
         $response->assertSee('Kerap Ditanyakan Sebelum Singgah');
+        $response->assertSee('maps.google.com');
+        $response->assertDontSee('waze.com');
     }
 }

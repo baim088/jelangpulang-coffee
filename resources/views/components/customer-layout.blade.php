@@ -283,7 +283,12 @@
 
             <div>
                 <h4 class="font-headline text-lg font-bold text-primary mb-3 uppercase tracking-wider">Kunjungi Kedai</h4>
-                <p class="text-sm leading-relaxed">Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan</p>
+                <p class="text-sm leading-relaxed flex items-start gap-2">
+                    <span>Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan</span>
+                    <a href="https://maps.google.com/?q={{ urlencode('Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan') }}" target="_blank" rel="noopener noreferrer" aria-label="Buka Google Maps" title="Buka di Google Maps" class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary transition-all shrink-0">
+                        <span class="material-symbols-outlined text-[16px]">location_on</span>
+                    </a>
+                </p>
                 <div class="pt-2">
                     <p class="text-xs font-bold text-secondary uppercase tracking-wider">Jam Operasional</p>
                     <p class="text-sm">Senin – Minggu: 15:00 – 22:00 WIB</p>
@@ -305,6 +310,9 @@
                 <p class="text-sm">+62 812-3456-7890</p>
                 <p class="text-sm">halo@jelangpulang.id</p>
                 <div class="flex items-center gap-2 pt-3">
+                    <a href="https://maps.google.com/?q={{ urlencode('Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan') }}" target="_blank" rel="noopener noreferrer" aria-label="Google Maps" title="Buka Google Maps" class="w-9 h-9 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-all">
+                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    </a>
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
                     </a>
