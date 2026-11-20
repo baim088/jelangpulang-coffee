@@ -77,10 +77,10 @@
                 <a href="{{ route('catalog.index') }}" class="text-sm font-semibold {{ request()->routeIs('catalog.*') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                     Katalog Menu
                 </a>
-                <a href="{{ route('home') }}#tentang-kami" class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
+                <a href="{{ route('about') }}" class="text-sm font-semibold {{ request()->routeIs('about') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                     Tentang Kami
                 </a>
-                <a href="{{ route('home') }}#kontak" class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
+                <a href="{{ route('contact') }}" class="text-sm font-semibold {{ request()->routeIs('contact') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                     Kontak
                 </a>
                 @if(auth()->check() && auth()->user()->role === 'user')
@@ -242,39 +242,32 @@
     </main>
 
     <!-- Bottom Navigation for Mobile -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-t border-outline-variant/30 px-6 py-2 flex items-center justify-around shadow-lg">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-t border-outline-variant/30 px-3 py-2 flex items-center justify-around shadow-lg">
         <a href="{{ route('home') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('home') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
-            <span class="material-symbols-outlined text-[22px]">home</span>
-            <span>Beranda</span>
+            <span class="material-symbols-outlined text-[20px]">home</span>
+            <span class="text-[11px]">Beranda</span>
         </a>
         <a href="{{ route('catalog.index') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('catalog.*') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
-            <span class="material-symbols-outlined text-[22px]">restaurant_menu</span>
-            <span>Katalog</span>
+            <span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
+            <span class="text-[11px]">Katalog</span>
         </a>
         <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('cart.*') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
-            <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
-            <span>Pesanan</span>
+            <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+            <span class="text-[11px]">Keranjang</span>
             @if($cartCount > 0)
-                <span class="absolute -top-1 right-2 w-4 h-4 rounded-full bg-secondary text-white text-[10px] flex items-center justify-center font-bold">
+                <span class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full bg-secondary text-white text-[9px] flex items-center justify-center font-bold">
                     {{ $cartCount }}
                 </span>
             @endif
         </a>
-        @if(auth()->check() && auth()->user()->role === 'user')
-            <a href="{{ route('order.history') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('order.history') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
-                <span class="material-symbols-outlined text-[22px]">history</span>
-                <span>Riwayat</span>
-            </a>
-            <a href="{{ route('customer.profile') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('customer.profile*') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
-                <span class="material-symbols-outlined text-[22px]">account_circle</span>
-                <span>Akun</span>
-            </a>
-        @elseif(!auth()->check())
-            <a href="/login" class="flex flex-col items-center gap-0.5 text-xs text-on-surface-variant">
-                <span class="material-symbols-outlined text-[22px]">person</span>
-                <span>Masuk</span>
-            </a>
-        @endif
+        <a href="{{ route('about') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('about') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
+            <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+            <span class="text-[11px]">Tentang</span>
+        </a>
+        <a href="{{ route('contact') }}" class="flex flex-col items-center gap-0.5 text-xs {{ request()->routeIs('contact') ? 'text-primary font-bold' : 'text-on-surface-variant' }}">
+            <span class="material-symbols-outlined text-[20px]">call</span>
+            <span class="text-[11px]">Kontak</span>
+        </a>
     </div>
 
     <!-- Footer -->
@@ -302,8 +295,8 @@
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('home') }}" class="hover:text-primary transition-colors">Beranda</a></li>
                     <li><a href="{{ route('catalog.index') }}" class="hover:text-primary transition-colors">Katalog Menu</a></li>
-                    <li><a href="{{ route('home') }}#tentang-kami" class="hover:text-primary transition-colors">Tentang Kami</a></li>
-                    <li><a href="{{ route('home') }}#kontak" class="hover:text-primary transition-colors">Hubungi Kami</a></li>
+                    <li><a href="{{ route('about') }}" class="hover:text-primary transition-colors">Tentang Kami</a></li>
+                    <li><a href="{{ route('contact') }}" class="hover:text-primary transition-colors">Hubungi Kami</a></li>
                 </ul>
             </div>
 

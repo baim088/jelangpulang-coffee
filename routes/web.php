@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 // Modul A: Publik & Landing Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/tentang-kami', [HomeController::class, 'about'])->name('about');
+Route::get('/kontak', [HomeController::class, 'contact'])->name('contact');
 
 // Modul B: Katalog & Self-Order User
 Route::get('/katalog', [CatalogController::class, 'index'])->name('catalog.index');

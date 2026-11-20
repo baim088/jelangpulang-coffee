@@ -40,4 +40,23 @@ class HomeController extends Controller
             'isOpen'
         ));
     }
+
+    public function about()
+    {
+        $storeHours = StoreSetting::get('store_hours', '15:00 - 22:00 WIB');
+        $storeAddress = StoreSetting::get('store_address', 'Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan');
+        $storeTagline = StoreSetting::get('store_tagline', 'Satu gelas sebelum arah pulang');
+
+        return view('customer.about', compact('storeHours', 'storeAddress', 'storeTagline'));
+    }
+
+    public function contact()
+    {
+        $storeHours = StoreSetting::get('store_hours', '15:00 - 22:00 WIB');
+        $storeAddress = StoreSetting::get('store_address', 'Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan');
+        $storePhone = StoreSetting::get('store_phone', '0812-3456-7890');
+        $storeEmail = StoreSetting::get('store_email', 'halo@jelangpulang.id');
+
+        return view('customer.contact', compact('storeHours', 'storeAddress', 'storePhone', 'storeEmail'));
+    }
 }
