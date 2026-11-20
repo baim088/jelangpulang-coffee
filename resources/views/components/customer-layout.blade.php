@@ -77,6 +77,12 @@
                 <a href="{{ route('catalog.index') }}" class="text-sm font-semibold {{ request()->routeIs('catalog.*') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                     Katalog Menu
                 </a>
+                <a href="{{ route('home') }}#tentang-kami" class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
+                    Tentang Kami
+                </a>
+                <a href="{{ route('home') }}#kontak" class="text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors">
+                    Kontak
+                </a>
                 @if(auth()->check() && auth()->user()->role === 'user')
                     <a href="{{ route('order.history') }}" class="text-sm font-semibold {{ request()->routeIs('order.history') ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-on-surface-variant hover:text-primary transition-colors' }}">
                         Riwayat Pesanan
@@ -274,16 +280,20 @@
     <!-- Footer -->
     <footer class="bg-surface-container-highest/60 border-t border-outline-variant/30 pt-12 pb-24 md:pb-12 mt-16 text-on-surface-variant">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="md:col-span-2 space-y-3">
+            <div class="space-y-3">
                 <div class="flex items-center gap-2">
                     <img src="{{ asset('images/logo.png') }}" alt="JelangPulang Coffee" class="h-9 w-auto object-contain">
                 </div>
-                <p class="text-sm leading-relaxed max-w-sm">
-                    Kedai kopi sore hari. Jeda sejenak untuk melaraskan rasa dan menghela napas sebelum perjalanan kembali pulang ke rumah.
-                </p>
-                <div class="flex items-center gap-2 text-xs text-secondary font-semibold pt-1">
-                    <span class="material-symbols-outlined text-[16px]">schedule</span>
-                    <span>Buka Setiap Hari: 15:00 - 22:00 WIB</span>
+                <p class="text-sm italic">"Satu gelas sebelum arah pulang."</p>
+                <p class="text-xs leading-relaxed">Ritual transisi sore hari, melepas hiruk-pikuk dalam secangkir seduhan kopi artisanal hangat.</p>
+            </div>
+
+            <div>
+                <h4 class="font-headline text-lg font-bold text-primary mb-3 uppercase tracking-wider">Kunjungi Kedai</h4>
+                <p class="text-sm leading-relaxed">Jl. Senja Kencana No. 42, Kebayoran Baru, Jakarta Selatan</p>
+                <div class="pt-2">
+                    <p class="text-xs font-bold text-secondary uppercase tracking-wider">Jam Operasional</p>
+                    <p class="text-sm">Senin – Minggu: 15:00 – 22:00 WIB</p>
                 </div>
             </div>
 
@@ -291,17 +301,29 @@
                 <h4 class="font-headline text-lg font-bold text-primary mb-3 uppercase tracking-wider">Navigasi</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('home') }}" class="hover:text-primary transition-colors">Beranda</a></li>
-                    <li><a href="{{ route('catalog.index') }}" class="hover:text-primary transition-colors">Semua Menu</a></li>
-                    <li><a href="{{ route('cart.index') }}" class="hover:text-primary transition-colors">Keranjang Belanja</a></li>
+                    <li><a href="{{ route('catalog.index') }}" class="hover:text-primary transition-colors">Katalog Menu</a></li>
+                    <li><a href="{{ route('home') }}#tentang-kami" class="hover:text-primary transition-colors">Tentang Kami</a></li>
+                    <li><a href="{{ route('home') }}#kontak" class="hover:text-primary transition-colors">Hubungi Kami</a></li>
                 </ul>
             </div>
 
             <div>
-                <h4 class="font-headline text-lg font-bold text-primary mb-3 uppercase tracking-wider">Kontak & Lokasi</h4>
-                <p class="text-sm leading-relaxed mb-2">Jl. Sore Hari No. 12, Senja Raya</p>
-                <p class="text-sm font-semibold text-primary">WhatsApp: 0812-3456-7890</p>
+                <h4 class="font-headline text-lg font-bold text-primary mb-3 uppercase tracking-wider">Kontak & Sosial</h4>
+                <p class="text-sm">+62 812-3456-7890</p>
+                <p class="text-sm">halo@jelangpulang.id</p>
+                <div class="flex items-center gap-2 pt-3">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-9 h-9 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="20" rx="5" ry="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                    </a>
+                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-9 h-9 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-all">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path></svg>
+                    </a>
+                    <a href="mailto:halo@jelangpulang.id" aria-label="Email" class="w-9 h-9 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-primary flex items-center justify-center transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                    </a>
+                </div>
                 <p class="text-xs text-on-surface-variant/70 mt-4">
-                    &copy; {{ date('Y') }} JelangPulang Coffee. All rights reserved.
+                    &copy; {{ date('Y') }} Kedai Kopi JelangPulang. Hak Cipta Dilindungi.
                 </p>
             </div>
         </div>
