@@ -22,55 +22,61 @@
         }
     }">
 
-        <!-- TOP HEADER & METRICS RIBBON -->
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-            <div>
-                <div class="flex items-center gap-2 text-secondary text-xs font-bold uppercase tracking-wider">
-                    <span class="material-symbols-outlined text-[18px]">receipt_long</span>
-                    <span>Operasional Meja & POS</span>
+        <!-- 4 QUICK METRICS BADGES (DI ATAS OPERASIONAL MEJA & POS) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            <a href="{{ route('kasir.antrean', ['status' => 'menunggu_verifikasi']) }}" 
+               class="flex items-center gap-3 p-3.5 rounded-2xl border transition-all shadow-sm {{ $status === 'menunggu_verifikasi' ? 'bg-secondary-container text-on-secondary-container border-secondary/40 ring-2 ring-secondary/20' : 'bg-surface-container-low text-on-surface border-surface-container-highest/60 hover:bg-surface-container' }}">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 {{ $status === 'menunggu_verifikasi' ? 'bg-secondary text-on-secondary' : 'bg-surface-container-high text-secondary' }}">
+                    <span class="material-symbols-outlined text-[20px]">hourglass_top</span>
                 </div>
-                <h1 class="font-headline text-3xl font-bold text-primary tracking-tight mt-1">Antrean Pesanan Masuk</h1>
-                <p class="text-sm text-on-surface-variant">Pantau pesanan self-order pelanggan dan verifikasi bukti pembayaran QRIS secara real-time.</p>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-medium {{ $status === 'menunggu_verifikasi' ? 'text-on-secondary-container' : 'text-on-surface-variant' }} truncate">Menunggu</span>
+                    <span class="font-headline text-xl font-bold leading-none">{{ $metrics['menunggu'] }} Pesanan</span>
+                </div>
+            </a>
+
+            <a href="{{ route('kasir.antrean', ['status' => 'diproses']) }}" 
+               class="flex items-center gap-3 p-3.5 rounded-2xl border transition-all shadow-sm {{ $status === 'diproses' ? 'bg-primary text-on-primary border-primary/40 ring-2 ring-primary/20' : 'bg-surface-container-low text-on-surface border-surface-container-highest/60 hover:bg-surface-container' }}">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 {{ $status === 'diproses' ? 'bg-white text-primary' : 'bg-surface-container-high text-primary' }}">
+                    <span class="material-symbols-outlined text-[20px]">blender</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-medium {{ $status === 'diproses' ? 'text-on-primary/80' : 'text-on-surface-variant' }} truncate">Diproses</span>
+                    <span class="font-headline text-xl font-bold leading-none">{{ $metrics['diproses'] }} Aktif</span>
+                </div>
+            </a>
+
+            <a href="{{ route('kasir.antrean', ['status' => 'selesai']) }}" 
+               class="flex items-center gap-3 p-3.5 rounded-2xl border transition-all shadow-sm {{ $status === 'selesai' ? 'bg-emerald-600 text-white border-emerald-700 ring-2 ring-emerald-500/20' : 'bg-surface-container-low text-on-surface border-surface-container-highest/60 hover:bg-surface-container' }}">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 {{ $status === 'selesai' ? 'bg-white text-emerald-700' : 'bg-emerald-50 text-emerald-700' }}">
+                    <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-medium {{ $status === 'selesai' ? 'text-white/80' : 'text-on-surface-variant' }} truncate">Selesai Hari Ini</span>
+                    <span class="font-headline text-xl font-bold leading-none">{{ $metrics['selesai'] }}</span>
+                </div>
+            </a>
+
+            <a href="{{ route('kasir.antrean', ['status' => 'dibatalkan']) }}" 
+               class="flex items-center gap-3 p-3.5 rounded-2xl border transition-all shadow-sm {{ $status === 'dibatalkan' ? 'bg-error text-white border-error ring-2 ring-error/20' : 'bg-surface-container-low text-on-surface border-surface-container-highest/60 hover:bg-surface-container' }}">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 {{ $status === 'dibatalkan' ? 'bg-white text-error' : 'bg-error/10 text-error' }}">
+                    <span class="material-symbols-outlined text-[20px]">cancel</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-xs font-medium {{ $status === 'dibatalkan' ? 'text-white/80' : 'text-on-surface-variant' }} truncate">Dibatalkan</span>
+                    <span class="font-headline text-xl font-bold leading-none">{{ $metrics['dibatalkan'] }}</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- PAGE TITLE -->
+        <div class="mb-6">
+            <div class="flex items-center gap-2 text-secondary text-xs font-bold uppercase tracking-wider">
+                <span class="material-symbols-outlined text-[18px]">receipt_long</span>
+                <span>Operasional Meja & POS</span>
             </div>
-
-            <!-- Quick Metrics Ribbon (FR-C01) -->
-            <div class="flex flex-wrap items-center gap-2 bg-surface-container-low p-2 rounded-2xl border border-surface-container-highest/60 shadow-sm">
-                <a href="{{ route('kasir.antrean', ['status' => 'menunggu_verifikasi']) }}" 
-                   class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $status === 'menunggu_verifikasi' ? 'bg-secondary-container text-on-secondary-container' : 'bg-surface-container-high/60 text-on-surface hover:bg-secondary-container/40' }} transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">hourglass_top</span>
-                    <div class="flex flex-col">
-                        <span class="text-xs">Menunggu</span>
-                        <span class="font-headline text-lg font-bold leading-none">{{ $metrics['menunggu'] }} Pesanan</span>
-                    </div>
-                </a>
-
-                <a href="{{ route('kasir.antrean', ['status' => 'diproses']) }}" 
-                   class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $status === 'diproses' ? 'bg-primary text-on-primary' : 'bg-surface-container-high/60 text-on-surface hover:bg-primary/10' }} transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">blender</span>
-                    <div class="flex flex-col">
-                        <span class="text-xs">Diproses</span>
-                        <span class="font-headline text-lg font-bold leading-none">{{ $metrics['diproses'] }} Aktif</span>
-                    </div>
-                </a>
-
-                <a href="{{ route('kasir.antrean', ['status' => 'selesai']) }}" 
-                   class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $status === 'selesai' ? 'bg-emerald-600 text-white' : 'bg-surface-container-high/60 text-on-surface hover:bg-emerald-50' }} transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
-                    <div class="flex flex-col">
-                        <span class="text-xs">Selesai Hari Ini</span>
-                        <span class="font-headline text-lg font-bold leading-none">{{ $metrics['selesai'] }}</span>
-                    </div>
-                </a>
-
-                <a href="{{ route('kasir.antrean', ['status' => 'dibatalkan']) }}" 
-                   class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $status === 'dibatalkan' ? 'bg-error text-white' : 'bg-surface-container-high/60 text-on-surface hover:bg-error/10' }} transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">cancel</span>
-                    <div class="flex flex-col">
-                        <span class="text-xs">Dibatalkan</span>
-                        <span class="font-headline text-lg font-bold leading-none">{{ $metrics['dibatalkan'] }}</span>
-                    </div>
-                </a>
-            </div>
+            <h1 class="font-headline text-3xl font-bold text-primary tracking-tight mt-1">Antrean Pesanan Masuk</h1>
+            <p class="text-sm text-on-surface-variant">Pantau pesanan self-order pelanggan dan verifikasi bukti pembayaran QRIS secara real-time.</p>
         </div>
 
         <!-- FILTER TAB & SEARCH CONTROLS (FR-C01) -->

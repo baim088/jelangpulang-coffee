@@ -67,4 +67,48 @@ class KasirRoleRestrictionTest extends TestCase
         $this->actingAs($user)->get('/pesanan/riwayat')->assertOk();
         $this->actingAs($user)->get('/profil')->assertOk();
     }
+
+    public function test_kasir_dapat_memperbarui_profil_dan_ganti_kata_sandi(): void
+    {
+        $kasir = User::where('role', 'kasir')->first();
+
+        // 1. Kasir update profil
+        $responseProfile = $this->actingAs($kasir)->put('/profil', [
+            'name'  => 'Barista Senior',
+            'email' => 'barista.senior@jelangpulang.test',
+            'phone' => '081298765432',
+        ]);
+        $responseProfile->assertRedirect();
+        $responseProfile->assertSessionHas('success');
+
+        $kasir->refresh();
+        $this->assertEquals('Barista Senior', $kasir->name);
+        $this->assertEquals('barista.senior@jelangpulang.test', $kasir->email);
+
+        // 2. Kasir ganti password
+        $responsePassword = $this->actingAs($kasir)->put('/profil/password', [
+            'current_password'      => 'password',
+            'password'              => 'kasirbaru123',
+            'password_confirmation' => 'kasirbaru123',
+        ]);
+        $responsePassword->assertRedirect();
+        $responsePassword->assertSessionHas('success');
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('kasirbaru123', $kasir->fresh()->password));
+    }
+
+    public function test_antrean_kasir_menampilkan_badge_metrik_dan_modal_profil(): void
+    {
+        $kasir = User::where('role', 'kasir')->first();
+
+        $response = $this->actingAs($kasir)->get(route('kasir.antrean'));
+        $response->assertOk();
+        $response->assertSee('Operasional Meja & POS', false);
+        $response->assertSee('Antrean Pesanan Masuk');
+        $response->assertSee('Menunggu');
+        $response->assertSee('Diproses');
+        $response->assertSee('Selesai Hari Ini');
+        $response->assertSee('Dibatalkan');
+        $response->assertSee('Edit Profil');
+        $response->assertSee('Ganti Sandi');
+    }
 }

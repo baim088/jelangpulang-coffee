@@ -60,7 +60,12 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-background text-on-surface antialiased flex min-h-screen">
+<body class="bg-background text-on-surface antialiased flex min-h-screen"
+      x-data="{ 
+          editProfileModal: {{ ($errors->has('name') || $errors->has('email') || $errors->has('phone')) ? 'true' : 'false' }}, 
+          editPasswordModal: {{ ($errors->has('current_password') || $errors->has('password')) ? 'true' : 'false' }},
+          profileDropdown: false 
+      }">
 
     <!-- ASIDE / SIDEBAR KASIR -->
     <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)] border-r border-surface-container-highest/60">
@@ -137,6 +142,19 @@
                     <span class="text-xs text-on-surface-variant capitalize">{{ auth()->user()->role }} • JelangPulang</span>
                 </div>
             </div>
+
+            <!-- Tombol Aksi Profil & Password -->
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" @click="editProfileModal = true" class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[16px]">manage_accounts</span>
+                    <span>Edit Profil</span>
+                </button>
+                <button type="button" @click="editPasswordModal = true" class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[16px]">lock_reset</span>
+                    <span>Ganti Sandi</span>
+                </button>
+            </div>
+
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
@@ -162,7 +180,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4 sm:gap-6">
                 <div class="text-right hidden sm:block">
                     <p class="text-sm font-semibold text-primary" id="live-clock">
                         {{ now()->isoFormat('dddd, D MMM Y') }}
@@ -174,6 +192,43 @@
                 <a href="{{ route('home') }}" target="_blank" class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant" title="Lihat Tampilan Pelanggan">
                     <span class="material-symbols-outlined text-[20px]">open_in_new</span>
                 </a>
+
+                <!-- Dropdown Profil Header Kasir -->
+                <div class="relative" @click.away="profileDropdown = false">
+                    <button @click="profileDropdown = !profileDropdown" type="button" class="flex items-center gap-2.5 p-1.5 pr-3 rounded-full hover:bg-surface-container-high transition-colors">
+                        <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shadow-sm">
+                            {{ strtoupper(substr(auth()->user()->name ?? 'K', 0, 1)) }}
+                        </div>
+                        <span class="text-xs font-semibold text-on-surface hidden md:inline-block max-w-[120px] truncate">{{ auth()->user()->name }}</span>
+                        <span class="material-symbols-outlined text-[18px] text-on-surface-variant">expand_more</span>
+                    </button>
+
+                    <div x-cloak x-show="profileDropdown" class="absolute right-0 mt-2 w-56 rounded-2xl bg-surface-container-lowest shadow-xl border border-surface-container-highest/80 py-2 z-50">
+                        <div class="px-4 py-2 border-b border-surface-container-highest/50">
+                            <p class="text-xs font-bold text-on-surface truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-[11px] text-on-surface-variant truncate">{{ auth()->user()->email }}</p>
+                            <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-secondary-container text-on-secondary-container">
+                                Role: {{ auth()->user()->role }}
+                            </span>
+                        </div>
+                        <button type="button" @click="editProfileModal = true; profileDropdown = false" class="w-full text-left px-4 py-2.5 text-xs text-on-surface hover:bg-surface-container-high flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-primary">manage_accounts</span>
+                            <span>Edit Profil</span>
+                        </button>
+                        <button type="button" @click="editPasswordModal = true; profileDropdown = false" class="w-full text-left px-4 py-2.5 text-xs text-on-surface hover:bg-surface-container-high flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">lock_reset</span>
+                            <span>Ganti Kata Sandi</span>
+                        </button>
+                        <div class="border-t border-surface-container-highest/50 my-1"></div>
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2.5 text-xs text-error hover:bg-error-container/40 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">logout</span>
+                                <span>Keluar / Ganti Sesi</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -204,6 +259,142 @@
         <main class="p-8 flex-1">
             {{ $slot }}
         </main>
+    </div>
+
+    <!-- ==============================================
+         MODAL 1: EDIT PROFIL KASIR
+         ============================================== -->
+    <div x-cloak x-show="editProfileModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-surface-container-highest/80 space-y-5" @click.away="editProfileModal = false">
+            <div class="flex items-center justify-between border-b border-surface-container-highest/60 pb-3">
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="material-symbols-outlined text-[24px]">manage_accounts</span>
+                    <h3 class="font-headline text-xl font-bold">Edit Informasi Profil Kasir</h3>
+                </div>
+                <button type="button" @click="editProfileModal = false" class="text-on-surface-variant hover:text-on-surface text-xl font-bold">&times;</button>
+            </div>
+
+            <form action="{{ route('customer.profile.update') }}" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_modal_name">
+                        Nama Lengkap <span class="text-error">*</span>
+                    </label>
+                    <input type="text" id="kasir_modal_name" name="name" value="{{ old('name', auth()->user()->name) }}" required
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    @error('name')
+                        <p class="text-error text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_modal_email">
+                        Alamat Email <span class="text-error">*</span>
+                    </label>
+                    <input type="email" id="kasir_modal_email" name="email" value="{{ old('email', auth()->user()->email) }}" required
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    @error('email')
+                        <p class="text-error text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_modal_phone">
+                        Nomor WhatsApp / Telepon
+                    </label>
+                    <input type="text" id="kasir_modal_phone" name="phone" value="{{ old('phone', auth()->user()->phone) }}" placeholder="Contoh: 081234567890"
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    @error('phone')
+                        <p class="text-error text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-surface-container-highest/60">
+                    <button type="button" @click="editProfileModal = false" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-full bg-primary text-on-primary font-headline text-xs font-bold hover:bg-primary-container transition-all shadow-sm">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 2: GANTI KATA SANDI KASIR
+         ============================================== -->
+    <div x-cloak x-show="editPasswordModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-surface-container-highest/80 space-y-5" @click.away="editPasswordModal = false">
+            <div class="flex items-center justify-between border-b border-surface-container-highest/60 pb-3">
+                <div class="flex items-center gap-2 text-secondary">
+                    <span class="material-symbols-outlined text-[24px]">lock_reset</span>
+                    <h3 class="font-headline text-xl font-bold">Ganti Kata Sandi Kasir</h3>
+                </div>
+                <button type="button" @click="editPasswordModal = false" class="text-on-surface-variant hover:text-on-surface text-xl font-bold">&times;</button>
+            </div>
+
+            <form action="{{ route('customer.profile.password') }}" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_current_password">
+                        Kata Sandi Saat Ini <span class="text-error">*</span>
+                    </label>
+                    <input type="password" id="kasir_current_password" name="current_password" required
+                           placeholder="Masukkan kata sandi lama Anda"
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    @error('current_password')
+                        <p class="text-error text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_new_password">
+                        Kata Sandi Baru <span class="text-error">*</span>
+                    </label>
+                    <input type="password" id="kasir_new_password" name="password" required
+                           placeholder="Minimal 6 karakter"
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                    @error('password')
+                        <p class="text-error text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1" for="kasir_new_password_confirmation">
+                        Konfirmasi Kata Sandi Baru <span class="text-error">*</span>
+                    </label>
+                    <input type="password" id="kasir_new_password_confirmation" name="password_confirmation" required
+                           placeholder="Ulangi kata sandi baru"
+                           class="w-full px-4 py-2.5 rounded-2xl bg-surface-container text-xs font-medium text-on-surface border border-surface-container-highest/80 focus:outline-none focus:ring-2 focus:ring-primary/40">
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-surface-container-highest/60">
+                    <button type="button" @click="editPasswordModal = false" class="px-4 py-2 rounded-full bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-full bg-secondary text-on-secondary font-headline text-xs font-bold hover:bg-secondary/90 transition-all shadow-sm">
+                        Perbarui Kata Sandi
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     @stack('scripts')
