@@ -142,26 +142,6 @@
                     <span class="text-xs text-on-surface-variant capitalize">{{ auth()->user()->role }} • JelangPulang</span>
                 </div>
             </div>
-
-            <!-- Tombol Aksi Profil & Password -->
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button" @click="editProfileModal = true" class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
-                    <span class="material-symbols-outlined text-[16px]">manage_accounts</span>
-                    <span>Edit Profil</span>
-                </button>
-                <button type="button" @click="editPasswordModal = true" class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
-                    <span class="material-symbols-outlined text-[16px]">lock_reset</span>
-                    <span>Ganti Sandi</span>
-                </button>
-            </div>
-
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="flex items-center justify-center gap-2 w-full py-2 rounded-xl bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary transition-all text-xs font-semibold">
-                    <span class="material-symbols-outlined text-[16px]">logout</span>
-                    <span>Keluar / Ganti Sesi</span>
-                </button>
-            </form>
         </div>
     </aside>
 
@@ -189,9 +169,6 @@
                         Sistem Kasir v1.0
                     </p>
                 </div>
-                <a href="{{ route('home') }}" target="_blank" class="p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant" title="Lihat Tampilan Pelanggan">
-                    <span class="material-symbols-outlined text-[20px]">open_in_new</span>
-                </a>
 
                 <!-- Dropdown Profil Header Kasir -->
                 <div class="relative" @click.away="profileDropdown = false">
